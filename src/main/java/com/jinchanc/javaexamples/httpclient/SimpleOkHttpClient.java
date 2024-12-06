@@ -18,7 +18,6 @@ import java.util.concurrent.TimeUnit;
  * @author zhangjin@algorix.co
  * @since 2024/12/5 10:35
  */
-@Lazy
 @Slf4j
 @Component
 public class SimpleOkHttpClient implements HttpClient {

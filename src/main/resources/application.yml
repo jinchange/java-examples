@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: java-examples
+  threads:
+    virtual:
+      enabled: true
