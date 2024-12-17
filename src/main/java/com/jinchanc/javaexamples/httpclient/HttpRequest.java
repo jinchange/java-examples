@@ -2,8 +2,6 @@ package com.jinchanc.javaexamples.httpclient;
 
 import lombok.Builder;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.time.Duration;
 
@@ -26,4 +24,6 @@ public class HttpRequest {
     private String acceptEncoding;
     // http request max waiting time, unit milliseconds
     private Duration timeout;
+    // http request header userAgent e.g(Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36)
+    private String userAgent;
 }

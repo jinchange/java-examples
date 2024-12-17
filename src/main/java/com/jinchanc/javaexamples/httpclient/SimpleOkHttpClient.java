@@ -3,7 +3,9 @@ package com.jinchanc.javaexamples.httpclient;
 import jakarta.annotation.PreDestroy;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
-import org.springframework.context.annotation.Lazy;
+import okio.Buffer;
+import org.jetbrains.annotations.NotNull;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
@@ -11,6 +13,7 @@ import org.springframework.util.StringUtils;
 import java.io.IOException;
 import java.net.SocketTimeoutException;
 import java.time.Duration;
+import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 
@@ -18,6 +21,7 @@ import java.util.concurrent.TimeUnit;
  * @author zhangjin@algorix.co
  * @since 2024/12/5 10:35
  */
+@Primary
 @Slf4j
 @Component
 public class SimpleOkHttpClient implements HttpClient {
@@ -56,21 +60,24 @@ public class SimpleOkHttpClient implements HttpClient {
 
     @Override
     public HttpResponse get(HttpRequest httpRequest) {
-        Assert.notNull(httpRequest, "Request must not be null");
-        Assert.isTrue(StringUtils.hasText(httpRequest.getUrl()), "Url must not be empty");
-
-        long startTime = System.currentTimeMillis();
-        Request request = new Request.Builder()
+        long requestTime = System.currentTimeMillis();
+        Assert.isTrue(httpRequest != null && StringUtils.hasText(httpRequest.getUrl()), "Invalid httpRequest");
+        Request.Builder requestBuilder = new Request.Builder()
                 .get()
-                .url(httpRequest.getUrl())
-                .build();
+                .url(httpRequest.getUrl());
+        if (httpRequest.getUserAgent() != null) {
+            requestBuilder.addHeader("User-Agent", httpRequest.getUserAgent());
+        }
+        if (httpRequest.getAcceptEncoding() != null) {
+            requestBuilder.addHeader("Accept-Encoding", httpRequest.getAcceptEncoding());
+        }
+        Request request = requestBuilder.build();
         Duration timeout = httpRequest.getTimeout() != null ? httpRequest.getTimeout() : DEF_TIMEOUT;
         HttpResponse.HttpResponseBuilder httpResponseBuilder = HttpResponse.builder();
         try (Response response = client.newBuilder().callTimeout(timeout).build().newCall(request).execute()) {
             httpResponseBuilder.status(response.code());
             ResponseBody body;
             if (response.isSuccessful() && (body = response.body()) != null) {
-                // TODO 处理json解压缩
                 MediaType mediaType = body.contentType();
                 httpResponseBuilder
                         .body(body.bytes())
@@ -79,15 +86,19 @@ public class SimpleOkHttpClient implements HttpClient {
         } catch (IOException e) {
             if (e instanceof SocketTimeoutException) {
                 httpResponseBuilder
-                        .message(e.getMessage())
+                        .errorMessage(e.getMessage())
                         .status(TIMEOUT);
             } else {
                 httpResponseBuilder
-                        .message(e.getMessage())
+                        .errorMessage(e.getMessage())
                         .status(UNKNOWN_HTTP_ERROR);
             }
         } finally {
-            httpResponseBuilder.costTime(System.currentTimeMillis() - startTime);
+            long responseTime = System.currentTimeMillis();
+            httpResponseBuilder
+                    .requestTime(requestTime)
+                    .responseTime(responseTime)
+                    .costTime(responseTime - requestTime);
         }
         return httpResponseBuilder.build();
     }
@@ -98,8 +109,44 @@ public class SimpleOkHttpClient implements HttpClient {
     }
 
     @Override
-    public HttpResponse post(HttpRequest request) {
-        return null;
+    public HttpResponse post(HttpRequest httpRequest) {
+        long requestTime = System.currentTimeMillis();
+        Request.Builder requestBuilder = new Request.Builder()
+                .post(RequestBody.create(httpRequest.getBody(), MediaType.parse(httpRequest.getContentType())))
+                .url(httpRequest.getUrl())
+                .addHeader("Content-Type", httpRequest.getContentType())
+                .addHeader("Content-Encoding", httpRequest.getContentEncoding())
+                .addHeader("Accept-Encoding", httpRequest.getContentEncoding())
+                .addHeader("User-Agent", httpRequest.getUserAgent());
+        HttpResponse.HttpResponseBuilder httpResponseBuilder = HttpResponse.builder();
+        Request request = requestBuilder.build();
+        try (Response response = client.newBuilder().callTimeout(httpRequest.getTimeout()).build().newCall(request).execute()) {
+            httpResponseBuilder.status(response.code());
+            ResponseBody body;
+            if ((body = response.body()) != null) {
+                MediaType mediaType = body.contentType();
+                httpResponseBuilder
+                        .body(body.bytes())
+                        .contentType(mediaType != null ? mediaType.toString() : "");
+            }
+        } catch (IOException e) {
+            if (e instanceof SocketTimeoutException) {
+                httpResponseBuilder
+                        .errorMessage(e.getMessage())
+                        .status(TIMEOUT);
+            } else {
+                httpResponseBuilder
+                        .errorMessage(e.getMessage())
+                        .status(UNKNOWN_HTTP_ERROR);
+            }
+        } finally {
+            long responseTime = System.currentTimeMillis();
+            httpResponseBuilder
+                    .requestTime(requestTime)
+                    .responseTime(responseTime)
+                    .costTime(responseTime - requestTime);
+        }
+        return httpResponseBuilder.build();
     }
 
     @Override
