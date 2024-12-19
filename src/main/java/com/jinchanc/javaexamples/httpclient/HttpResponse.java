@@ -2,6 +2,7 @@ package com.jinchanc.javaexamples.httpclient;
 
 import lombok.Builder;
 import lombok.Data;
+import lombok.NonNull;
 
 /**
  * @author zhangjin@algorix.co
@@ -11,13 +12,13 @@ import lombok.Data;
 @Builder
 public class HttpResponse {
     // http response header contentType
-    private String contentType;
+    private @NonNull String contentType;
     // http response body
-    private byte[] body;
+    private byte @NonNull [] body;
     // http response status e.g(200,400,500)
     private int status;
     // http response error message
-    private String errorMessage;
+    private @NonNull String errorMessage;
     // http request timestamp
     private long requestTime;
     // http response timestamp

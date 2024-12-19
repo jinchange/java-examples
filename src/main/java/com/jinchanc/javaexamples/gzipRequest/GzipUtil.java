@@ -21,7 +21,7 @@ public class GzipUtil {
      * 压缩
      * string -> gzip byteArray
      */
-    public static byte[] compress(String str) throws IOException {
+    public static byte[] compress(String str) {
         if (!StringUtils.hasText(str))
             throw new RuntimeException("gzip String is empty.");
         return compress(str.getBytes(StandardCharsets.UTF_8));
@@ -40,7 +40,7 @@ public class GzipUtil {
      * 压缩
      * byteArray -> gzip byteArray
      */
-    public static byte[] compress(byte[] byteArray) throws IOException {
+    public static byte[] compress(byte[] byteArray) {
         if (byteArray == null || byteArray.length == 0) {
             throw new RuntimeException("gzip byteArray is empty.");
         }
@@ -50,6 +50,8 @@ public class GzipUtil {
             gzip.write(byteArray);
             gzip.finish();
             byteArray = out.toByteArray();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
         return byteArray;
     }

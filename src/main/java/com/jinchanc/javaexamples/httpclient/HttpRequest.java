@@ -2,6 +2,7 @@ package com.jinchanc.javaexamples.httpclient;
 
 import lombok.Builder;
 import lombok.Data;
+import lombok.NonNull;
 
 import java.time.Duration;
 
@@ -12,18 +13,15 @@ import java.time.Duration;
 @Data
 @Builder
 public class HttpRequest {
+    public static final String ENCODING_GZIP = "gzip";
     // http request url
-    private String url;
+    private @NonNull String url;
     // http request body
-    private byte[] body;
+    private byte @NonNull [] body;
     // http request header contentType e.g(application/json, application/octet-stream, application/x-protobuf)
-    private String contentType;
+    private @NonNull String contentType;
     // http request header contentEncoding e.g(gzip)
-    private String contentEncoding;
+    private @NonNull String contentEncoding;
     // http reqeust header acceptEncoding e.g(gzip)
-    private String acceptEncoding;
-    // http request max waiting time, unit milliseconds
-    private Duration timeout;
-    // http request header userAgent e.g(Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36)
-    private String userAgent;
+    private @NonNull Duration timeout;
 }
