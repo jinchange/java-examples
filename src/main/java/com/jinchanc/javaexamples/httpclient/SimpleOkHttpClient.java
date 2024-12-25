@@ -1,16 +1,13 @@
 package com.jinchanc.javaexamples.httpclient;
 
 import com.jinchanc.javaexamples.gzipRequest.GzipUtil;
-import jakarta.annotation.Nonnull;
+import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
-import org.springframework.util.Assert;
-import org.springframework.util.StringUtils;
 
 import java.io.IOException;
 import java.net.SocketTimeoutException;
@@ -27,9 +24,10 @@ import java.util.concurrent.TimeUnit;
 @Component
 public class SimpleOkHttpClient implements HttpClient {
 
-    private final OkHttpClient client;
+    private OkHttpClient client;
 
-    public SimpleOkHttpClient() {
+    @PostConstruct
+    public void init() {
         ConnectionPool connectionPool = new ConnectionPool(
                 1000,
                 5,
@@ -52,10 +50,10 @@ public class SimpleOkHttpClient implements HttpClient {
             if (cache != null) {
                 cache.close();
             }
+            log.info("OkHttpClient closed successfully");
         } catch (Exception e) {
             log.error("OkHttpClient close error", e);
         }
-        log.info("OkHttpClient closed successfully");
     }
 
     @Override
@@ -65,7 +63,7 @@ public class SimpleOkHttpClient implements HttpClient {
                 .get()
                 .url(httpRequest.getUrl());
         Request request = requestBuilder.build();
-        Duration timeout = httpRequest.getTimeout() != null ? httpRequest.getTimeout() : DEF_TIMEOUT;
+        Duration timeout = httpRequest.getTimeout();
         HttpResponse.HttpResponseBuilder httpResponseBuilder = HttpResponse.builder();
         try (Response response = client.newBuilder().callTimeout(timeout).build().newCall(request).execute()) {
             httpResponseBuilder.status(response.code());
