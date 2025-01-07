@@ -1,9 +1,0 @@
-spring:
-  application:
-    name: java-examples
-  threads:
-    virtual:
-      enabled: true
-
-server:
-  port: 8888

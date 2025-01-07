@@ -1,4 +1,4 @@
-package com.jinchanc.javaexamples.httpclient;
+package com.jinchanc.httpclient;
 
 /**
  * @author zhangjin@algorix.co

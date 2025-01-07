@@ -1,4 +1,4 @@
-package com.jinchanc.javaexamples.httpclient;
+package com.jinchanc.httpclient;
 
 import lombok.Builder;
 import lombok.Data;
@@ -14,10 +14,11 @@ import java.time.Duration;
 @Builder
 public class HttpRequest {
     public static final String ENCODING_GZIP = "gzip";
+
     private @NonNull String url;
     private byte @NonNull [] body;
-    // http request header contentType e.g(application/json, application/octet-stream, application/x-protobuf)
     private @NonNull String contentType;
     private @NonNull String contentEncoding;
     private @NonNull Duration timeout;
+    private @NonNull String userAgent;
 }

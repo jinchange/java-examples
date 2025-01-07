@@ -1,4 +1,4 @@
-package com.jinchanc.javaexamples.gzipRequest;
+package com.jinchanc.httpclient;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;

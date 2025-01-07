@@ -1,6 +1,5 @@
-package com.jinchanc.javaexamples.httpclient;
+package com.jinchanc.httpclient;
 
-import com.jinchanc.javaexamples.gzipRequest.GzipUtil;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 import lombok.NonNull;
@@ -12,6 +11,7 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.net.SocketTimeoutException;
 import java.time.Duration;
+import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 
@@ -68,14 +68,14 @@ public class SimpleOkHttpClient implements HttpClient {
         try (Response response = client.newBuilder().callTimeout(timeout).build().newCall(request).execute()) {
             httpResponseBuilder.status(response.code());
             ResponseBody body;
-            if (response.isSuccessful() && (body = response.body()) != null) {
+            if ((body = response.body()) != null) {
                 MediaType mediaType = body.contentType();
                 httpResponseBuilder
                         .body(body.bytes())
                         .contentType(mediaType != null ? mediaType.type() : "");
             }
         } catch (IOException e) {
-            if (e instanceof SocketTimeoutException) {
+            if (Objects.equals(e.getMessage(), "timeout")) {
                 httpResponseBuilder
                         .errorMessage(e.getMessage())
                         .status(TIMEOUT);
@@ -87,8 +87,6 @@ public class SimpleOkHttpClient implements HttpClient {
         } finally {
             long responseTime = System.currentTimeMillis();
             httpResponseBuilder
-                    .requestTime(requestTime)
-                    .responseTime(responseTime)
                     .costTime(responseTime - requestTime);
         }
         return httpResponseBuilder.build();
@@ -104,7 +102,8 @@ public class SimpleOkHttpClient implements HttpClient {
         long requestTime = System.currentTimeMillis();
         Request.Builder requestBuilder = new Request.Builder()
                 .url(httpRequest.getUrl())
-                .addHeader("Content-Type", httpRequest.getContentType());
+                .addHeader("Content-Type", httpRequest.getContentType())
+                .addHeader("User-Agent", httpRequest.getUserAgent());
         if (httpRequest.getContentEncoding().equalsIgnoreCase(HttpRequest.ENCODING_GZIP)) {
             requestBuilder
                     .post(RequestBody.create(GzipUtil.compress(httpRequest.getBody())))
@@ -136,8 +135,6 @@ public class SimpleOkHttpClient implements HttpClient {
         } finally {
             long responseTime = System.currentTimeMillis();
             httpResponseBuilder
-                    .requestTime(requestTime)
-                    .responseTime(responseTime)
                     .costTime(responseTime - requestTime);
         }
         return httpResponseBuilder.build();

@@ -1,4 +1,4 @@
-package com.jinchanc.javaexamples.httpclient;
+package com.jinchanc.httpclient;
 
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
