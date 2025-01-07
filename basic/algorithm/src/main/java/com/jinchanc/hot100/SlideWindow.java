@@ -1,7 +1,5 @@
 package com.jinchanc.hot100;
 
-import org.springframework.util.Assert;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -49,6 +47,6 @@ public class SlideWindow {
         return result;
     }
     public static void main(String[] args) {
-        Assert.isTrue(new SlideWindow().findAnagrams("abcba", "abc").equals(List.of(0, 2)), "error");
+        System.out.println(new SlideWindow().findAnagrams("abcba", "abc").equals(List.of(0, 2)));
     }
 }
