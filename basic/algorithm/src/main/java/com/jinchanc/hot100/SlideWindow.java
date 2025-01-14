@@ -46,6 +46,18 @@ public class SlideWindow {
         }
         return result;
     }
+
+    // 和为k的子数组
+    public int countK(int[] nums, int k) {
+        int count = 0;
+        int sum = 0, left = 0, right = 0;
+        for (int i = 0; i < nums.length; i++) {
+            int num = nums[i];
+
+        }
+        return count;
+    }
+
     public static void main(String[] args) {
         System.out.println(new SlideWindow().findAnagrams("abcba", "abc").equals(List.of(0, 2)));
     }
