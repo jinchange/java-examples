@@ -24,6 +24,7 @@
     <modules>
         <module>utils</module>
         <module>basic</module>
+        <module>netty</module>
     </modules>
     <scm>
         <connection/>

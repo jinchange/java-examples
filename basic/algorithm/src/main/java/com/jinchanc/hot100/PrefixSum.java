@@ -9,6 +9,7 @@ import java.util.List;
  */
 public class PrefixSum {
 
+    // 和为k的子数组
     public static int findPrefixSum(int[] nums, int k) {
         List<Integer> prefixSum = new ArrayList<>();
         int count = 0;
