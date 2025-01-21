@@ -31,7 +31,10 @@ public class HttpServer {
                                     .addLast("handler", new HttpServerHandler());             // 自定义业务逻辑处理器
                         }
                     })
-                    .childOption(ChannelOption.SO_KEEPALIVE, true);
+                    .childOption(ChannelOption.SO_KEEPALIVE, true)
+                    .childOption(ChannelOption.SO_BACKLOG, Integer.MAX_VALUE)
+                    .childOption(ChannelOption.SO_TIMEOUT, 2000)
+                    .childOption(ChannelOption.CONNECT_TIMEOUT_MILLIS, 2000);
             ChannelFuture f = b.bind().sync();
             System.out.println("Http Server started， Listening on " + port);
             f.channel().closeFuture().sync();
