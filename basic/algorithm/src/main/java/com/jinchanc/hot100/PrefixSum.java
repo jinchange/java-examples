@@ -1,7 +1,9 @@
 package com.jinchanc.hot100;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author zhangjin@algorix.co
@@ -40,6 +42,23 @@ public class PrefixSum {
 
         return count;
     }
+
+    // TODO 还是不是很理解
+    public static int findPrefixSum2(int[] nums, int k) {
+        Map<Integer, Integer> map = new HashMap<>();
+        map.put(0, 1);
+        int pre = 0;
+        int result = 0;
+        for (int num : nums) {
+            pre += num;
+            map.put(pre, map.getOrDefault(pre, 0) + 1);
+            if (map.containsKey(k - pre)) {
+                result += map.get(k - pre);
+            }
+        }
+        return result;
+    }
+
 
     public static void main(String[] args) {
         System.out.println(findPrefixSum(new int[]{1, 2, 3}, 3));

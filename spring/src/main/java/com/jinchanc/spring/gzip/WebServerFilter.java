@@ -26,9 +26,8 @@ public class WebServerFilter implements Filter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
-        HttpRequestBodyUnzipWrapper requestWrapper = new HttpRequestBodyUnzipWrapper(request);
         // TODO response 卡死bug无法解决
-        chain.doFilter(requestWrapper, response);
+        chain.doFilter(request, response);
     }
 
     @Override
