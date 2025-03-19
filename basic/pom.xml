@@ -19,6 +19,7 @@
     <modules>
         <module>algorithm</module>
         <module>source-code</module>
+        <module>restlet</module>
     </modules>
 
 </project>
