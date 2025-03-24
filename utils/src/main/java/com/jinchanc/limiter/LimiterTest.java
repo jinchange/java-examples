@@ -7,15 +7,16 @@ package com.jinchanc.limiter;
 public class LimiterTest {
 
     public static void main(String[] args) throws InterruptedException {
-        Limiter limiter = new FixedWindowLimiter(10);
-        while (true) {
-            if (limiter.tryAcquire()) {
-                System.out.println("success");
-            } else {
-                System.out.println("fail");
-            }
-            System.out.println(limiter);
-            Thread.sleep(80);
-        }
+//        Limiter limiter = new FixedWindowLimiter(10);
+//        while (true) {
+//            if (limiter.tryAcquire()) {
+//                System.out.println("success");
+//            } else {
+//                System.out.println("fail");
+//            }
+//            System.out.println(limiter);
+//            Thread.sleep(80);
+//        }
+
     }
 }
