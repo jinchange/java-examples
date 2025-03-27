@@ -16,7 +16,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 
 /**
- * @author zhangjin@algorix.co
+ * @author 475636591@qq.com
  * @since 2024/12/5 10:35
  */
 @Primary

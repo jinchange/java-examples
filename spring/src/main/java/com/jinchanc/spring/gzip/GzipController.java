@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Objects;
 
 /**
- * @author zhangjin@algorix.co
+ * @author 475636591@qq.com
  * @since 2025/1/21 17:13
  */
 @Slf4j

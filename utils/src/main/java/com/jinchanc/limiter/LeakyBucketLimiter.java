@@ -3,7 +3,7 @@ package com.jinchanc.limiter;
 import java.util.concurrent.*;
 
 /**
- * @author zhangjin@algorix.co
+ * @author 475636591@qq.com
  * @since 2025/3/21 10:46
  * 漏统算法 TODO
  */

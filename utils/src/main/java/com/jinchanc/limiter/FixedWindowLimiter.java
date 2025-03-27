@@ -1,7 +1,7 @@
 package com.jinchanc.limiter;
 
 /**
- * @author zhangjin@algorix.co
+ * @author 475636591@qq.com
  * @since 2025/3/19 11:21
  * 固定时间窗口限流算法
  * 原理：将时间划分为固定窗口（如1秒），统计窗口内的请求数，超过阈值则限流。

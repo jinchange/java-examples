@@ -3,7 +3,7 @@ package com.jinchanc;
 import java.util.Arrays;
 
 /**
- * @author zhangjin@algorix.co
+ * @author 475636591@qq.com
  * @since 2025/2/8 17:19
  */
 public class QuickSortLeft {

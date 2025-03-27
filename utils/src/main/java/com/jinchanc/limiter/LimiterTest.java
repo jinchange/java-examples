@@ -1,7 +1,7 @@
 package com.jinchanc.limiter;
 
 /**
- * @author zhangjin@algorix.co
+ * @author 475636591@qq.com
  * @since 2025/3/19 12:01
  */
 public class LimiterTest {

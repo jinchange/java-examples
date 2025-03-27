@@ -11,7 +11,7 @@ import java.io.PrintWriter;
 import java.util.Objects;
 
 /**
- * @author zhangjin@algorix.co
+ * @author 475636591@qq.com
  * @since 2025/1/21 14:54
  */
 public class HttpResponseBodyZipWrapper extends HttpServletResponseWrapper {

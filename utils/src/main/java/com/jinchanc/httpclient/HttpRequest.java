@@ -7,7 +7,7 @@ import lombok.NonNull;
 import java.time.Duration;
 
 /**
- * @author zhangjin@algorix.co
+ * @author 475636591@qq.com
  * @since 2024/12/5 10:34
  */
 @Data

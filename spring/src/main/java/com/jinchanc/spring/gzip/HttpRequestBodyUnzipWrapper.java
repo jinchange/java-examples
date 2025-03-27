@@ -13,7 +13,7 @@ import java.io.InputStreamReader;
 import java.util.Objects;
 
 /**
- * @author zhangjin@algorix.co
+ * @author 475636591@qq.com
  * @since 2025/1/21 14:51
  */
 public class HttpRequestBodyUnzipWrapper extends HttpServletRequestWrapper {
